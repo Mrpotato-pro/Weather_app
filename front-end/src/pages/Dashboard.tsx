@@ -80,7 +80,10 @@ export default function Dashboard() {
 
       {/* Always show search options */}
       <div style={{ marginBottom: "1rem" }}>
-        <p>Check weather for your location or another city:</p>
+<p style={{ fontSize: "1.25rem" }}>
+  Check weather for your location or another city:
+</p>
+
 <button onClick={handleUseLocation} className="location-btn">
   <span>Use My Location</span>
 </button>
@@ -97,9 +100,10 @@ export default function Dashboard() {
 
 {weather && (
   <div>
-    <h2>
-      Currently viewing: {weather.location.name}, {weather.location.country}
-    </h2>
+<h2 style={{ fontSize: "1.75rem" }}>
+  Currently viewing: {weather.location.name}, {weather.location.country}
+</h2>
+
     <WeatherCard 
     data={weather} 
     onAddFavorite={handleAddFavorite}

@@ -28,7 +28,7 @@ export default function WeatherCard({ data, onAddFavorite, favorites }: WeatherC
         {!isFavorite && (
           <button className="search-btn" onClick={onAddFavorite}>
             <span className="gradient"></span>
-            <span className="label">⭐ Favorite</span>
+            <span className="label">⭐</span>
             <span className="transition"></span>
           </button>
         )}
@@ -56,16 +56,22 @@ export default function WeatherCard({ data, onAddFavorite, favorites }: WeatherC
         </button>
       </div>
 
-      <ul>
-        <li><strong>Temperature:</strong> {temp}°{unit}</li>
-        <li><strong>Feels like:</strong> {feelsLike}°{unit}</li>
-        <li><strong>Humidity:</strong> {current.humidity}%</li>
-        <li><strong>Cloud cover:</strong> {current.cloud}%</li>
-        <li><strong>Wind:</strong> {current.wind_kph} kph ({current.wind_dir})</li>
-        <li><strong>Pressure:</strong> {current.pressure_mb} mb</li>
-        <li><strong>Visibility:</strong> {current.vis_km} km</li>
-        <li><strong>UV Index:</strong> {current.uv}</li>
-      </ul>
+<div className="weather-stats">
+  <ul>
+    <li><strong>Temperature:</strong> {temp}°{unit}</li>
+    <li><strong>Feels like:</strong> {feelsLike}°{unit}</li>
+    <li><strong>Humidity:</strong> {current.humidity}%</li>
+    <li><strong>Cloud cover:</strong> {current.cloud}%</li>
+  </ul>
+
+  <ul>
+    <li><strong>Wind:</strong> {current.wind_kph} kph ({current.wind_dir})</li>
+    <li><strong>Pressure:</strong> {current.pressure_mb} mb</li>
+    <li><strong>Visibility:</strong> {current.vis_km} km</li>
+    <li><strong>UV Index:</strong> {current.uv}</li>
+  </ul>
+</div>
+
     </div>
   );
 }
