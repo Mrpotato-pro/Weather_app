@@ -107,3 +107,6 @@ There is also an option to delete a city from your list.
 ![Favorites](./images/screen8.png)  
 
 
+## 🎥 Demo
+
+[Download Demo Video](./demo.gif)
