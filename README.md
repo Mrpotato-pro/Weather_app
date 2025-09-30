@@ -109,4 +109,4 @@ There is also an option to delete a city from your list.
 
 ## 🎥 Demo
 
-[Download Demo Video](./images/demo.gif)
+[Download Demo Video](./images/demo.mov)
