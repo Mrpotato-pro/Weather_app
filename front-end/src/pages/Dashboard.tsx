@@ -10,60 +10,70 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  // Load favorites from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem("favorites");
     if (stored) setFavorites(JSON.parse(stored));
   }, []);
 
-  // Save favorites to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // Search for a city
   const handleSearch = async () => {
     if (!city) return;
     try {
       setLoading(true);
       const data = await getWeatherByCity(city);
       setWeather(data);
-      setCity(""); // clear input after search
+      setCity("");
     } finally {
       setLoading(false);
     }
   };
 
-  // Use geolocation
   const handleUseLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (pos) => {
-        try {
-          setLoading(true);
-          const data = await getWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
-          setWeather(data);
-        } finally {
-          setLoading(false);
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try {
+            setLoading(true);
+            const data = await getWeatherByCoords(
+              pos.coords.latitude,
+              pos.coords.longitude
+            );
+            setWeather(data);
+          } catch (err) {
+            console.error("Error fetching weather:", err);
+            alert("Could not fetch weather for your location.");
+          } finally {
+            setLoading(false);
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          alert("Could not get your location. Please allow access or try again.");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
         }
-      });
+      );
     } else {
       alert("Geolocation not supported in your browser.");
     }
   };
 
-  // Add current city to favorites
   const handleAddFavorite = () => {
     if (weather?.location?.name && !favorites.includes(weather.location.name)) {
       setFavorites([...favorites, weather.location.name]);
     }
   };
 
-  // Remove a city from favorites
   const handleRemoveFavorite = (cityToRemove: string) => {
     setFavorites(favorites.filter((f) => f !== cityToRemove));
   };
 
-  // Select a favorite city
   const handleSelectFavorite = async (favCity: string) => {
     try {
       setLoading(true);
@@ -78,17 +88,14 @@ export default function Dashboard() {
     <div>
       <h1>🌤 Weather Dashboard</h1>
 
-      {/* Always show search options */}
       <div style={{ marginBottom: "1rem" }}>
-<p style={{ fontSize: "1.25rem" }}>
-  Check weather for your location or another city:
-</p>
+        <p style={{ fontSize: "1.25rem" }}>
+          Check weather for your location or another city:
+        </p>
 
-<button onClick={handleUseLocation} className="location-btn">
-  <span>Use My Location</span>
-</button>
-
-
+        <button onClick={handleUseLocation} className="location-btn">
+          <span>Use My Location</span>
+        </button>
 
         <SearchBar
           city={city}
@@ -98,22 +105,21 @@ export default function Dashboard() {
         />
       </div>
 
-{weather && (
-  <div>
-<h2 style={{ fontSize: "1.75rem" }}>
-  Currently viewing: {weather.location.name}, {weather.location.country}
-</h2>
+      {weather && (
+        <div>
+          <h2 style={{ fontSize: "1.75rem" }}>
+            Currently viewing: {weather.location.name},{" "}
+            {weather.location.country}
+          </h2>
 
-    <WeatherCard 
-    data={weather} 
-    onAddFavorite={handleAddFavorite}
-    favorites={favorites} 
-  />
-</div>
-)}
+          <WeatherCard
+            data={weather}
+            onAddFavorite={handleAddFavorite}
+            favorites={favorites}
+          />
+        </div>
+      )}
 
-
-      {/* Favorites list */}
       <FavoritesList
         favorites={favorites}
         onSelect={handleSelectFavorite}

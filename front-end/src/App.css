@@ -262,13 +262,13 @@ h1 {
 /* Inactive state colors */
 /* Inactive state colors */
 .temp-c-inactive {
-  background-color: #6b7280; /* Gray-500 */
+  background-color: #f97316; /* Gray-500 */
   color: white;
   box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
 }
 
 .temp-c-inactive:hover {
-  background-color: #4b5563; /* Gray-600 */
+  background-color: #ea580c; /* Gray-600 */
   box-shadow: rgba(107, 114, 128, 0.4) 0px 7px 29px 0px;
 }
 

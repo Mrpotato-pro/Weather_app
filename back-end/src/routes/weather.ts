@@ -18,9 +18,9 @@ router.get("/", async (req, res) => {
     let query = "";
 
     if (city) {
-      query = city as string; // e.g. "London"
+      query = city as string; 
     } else if (lat && lon) {
-      query = `${lat},${lon}`; // e.g. "51.5,-0.12"
+      query = `${lat},${lon}`; 
     }
 
     const response = await axios.get("https://api.weatherapi.com/v1/current.json", {
