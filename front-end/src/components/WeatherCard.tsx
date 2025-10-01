@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Lottie from "lottie-react";
 
-// Import animations
 import sunnyAnim from "../animations/sunny.json";
 import cloudyAnim from "../animations/cloudy.json";
 import mistAnim from "../animations/mist.json";
@@ -9,6 +8,13 @@ import rainAnim from "../animations/rain.json";
 import snowAnim from "../animations/snow.json";
 import stormAnim from "../animations/storm.json";
 import windyAnim from "../animations/windy.json";
+
+import nightClearAnim from "../animations/nightclear.json";
+import nightCloudyAnim from "../animations/nightcloudy.json";
+import nightRainAnim from "../animations/nightrain.json";
+import nightSnowAnim from "../animations/nightsnow.json";
+import nightThunderAnim from "../animations/nightthunder.json";
+import nightMistAnim from "../animations/nightmist.json";
 
 type WeatherCardProps = {
   data: any;
@@ -21,7 +27,7 @@ function getWeatherBackground(condition: string, isDay: number): string {
 
   // Nighttime background
   if (isDay === 0) {
-    return "linear-gradient(135deg, #192644ff, #4e2e81ff)"; 
+    return "linear-gradient(135deg, #192644ff, #4e2e81ff)";
   }
 
   if (c.includes("sunny") || c.includes("clear")) {
@@ -46,18 +52,30 @@ function getWeatherBackground(condition: string, isDay: number): string {
   return "linear-gradient(135deg, #1e3a8a, #0d9488)";
 }
 
-function getWeatherAnimation(condition: string) {
+function getWeatherAnimation(condition: string, isDay: number) {
   const c = condition.toLowerCase();
 
-  if (c.includes("sunny") || c.includes("clear")) return sunnyAnim;
-  if (c.includes("cloud")) return cloudyAnim;
-  if (c.includes("mist") || c.includes("fog")) return mistAnim;
-  if (c.includes("rain") || c.includes("drizzle")) return rainAnim;
-  if (c.includes("snow") || c.includes("ice")) return snowAnim;
-  if (c.includes("thunder") || c.includes("storm")) return stormAnim;
-  if (c.includes("wind")) return windyAnim;
+  if (isDay === 0) {
+    // Night animations
+    if (c.includes("clear") || c.includes("sunny")) return nightClearAnim;
+    if (c.includes("cloud")) return nightCloudyAnim;
+    if (c.includes("rain") || c.includes("drizzle")) return nightRainAnim;
+    if (c.includes("snow") || c.includes("ice")) return nightSnowAnim;
+    if (c.includes("thunder") || c.includes("storm")) return nightThunderAnim;
+    if (c.includes("wind")) return windyAnim; // reuse day
+    if (c.includes("mist") || c.includes("fog")) return nightMistAnim; // reuse day
+  } else {
+    // Day animations
+    if (c.includes("sunny") || c.includes("clear")) return sunnyAnim;
+    if (c.includes("cloud")) return cloudyAnim;
+    if (c.includes("mist") || c.includes("fog")) return mistAnim;
+    if (c.includes("rain") || c.includes("drizzle")) return rainAnim;
+    if (c.includes("snow") || c.includes("ice")) return snowAnim;
+    if (c.includes("thunder") || c.includes("storm")) return stormAnim;
+    if (c.includes("wind")) return windyAnim;
+  }
 
-  return sunnyAnim; 
+  return sunnyAnim;
 }
 
 export default function WeatherCard({ data, onAddFavorite, favorites }: WeatherCardProps) {
@@ -73,7 +91,7 @@ export default function WeatherCard({ data, onAddFavorite, favorites }: WeatherC
 
   const isFavorite = favorites.includes(cityName);
   const cardBackground = getWeatherBackground(current.condition.text, current.is_day);
-  const animationData = getWeatherAnimation(current.condition.text);
+  const animationData = getWeatherAnimation(current.condition.text, current.is_day);
 
   return (
     <div className="weather-card" style={{ background: cardBackground }}>
@@ -92,10 +110,9 @@ export default function WeatherCard({ data, onAddFavorite, favorites }: WeatherC
       <p><em>{location.region}</em></p>
       <p><strong>Local time:</strong> {location.localtime}</p>
 
-      <Lottie 
+      <Lottie
         animationData={animationData}
         loop={true}
-        speed={current.condition.text.toLowerCase().includes("sunny") ? 0.25 : 1}
         style={{ width: 160, height: 160, margin: "0 auto" }}
       />
 
@@ -116,7 +133,6 @@ export default function WeatherCard({ data, onAddFavorite, favorites }: WeatherC
         </button>
       </div>
 
-      {/* Stats split into two columns */}
       <div className="weather-stats">
         <ul>
           <li><strong>Temperature:</strong> {temp}°{unit}</li>
