@@ -1,7 +1,6 @@
 # 🌤 Weather Dashboard  
 
-A simple weather application built with **React** (frontend) and **Node.js** (backend).  
-This project was created as part of an internship test for **DEV@WORK** to demonstrate knowledge in full-stack software development.  
+A simple weather application built with **React** (frontend) and **Node.js** (backend). 
 
 ## Features  
 
